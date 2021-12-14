@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/SantaHub/Advocacy_PoC/issues"
   },
-  "homepage": "https://github.com/SantaHub/Advocacy_PoC#readme"
+  "homepage": "https://github.com/SantaHub/Advocacy_PoC#readme",
+  "dependencies": {
+    "nodemailer": "^6.7.2"
+  }
 }
