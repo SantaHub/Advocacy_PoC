@@ -1,14 +1,18 @@
+const randomBytes = require('crypto').randomBytes;
+const AWS = require('aws-sdk');
+
 exports.handler = (event, context, callback) => {
 
     const logId = randomBytes(16);
     console.log('Received event (', logId, '): ', event);
 
-    recordRide(logId, response).then(() => {
+    var params  = generateParams("austin.puthen@pace.edu");
+    sendEmail(logId, params).then(() => {
         callback(null, {
             statusCode: 201,
             body: JSON.stringify({
                 logID: logId.toString("hex"),
-                representatives: response.representative
+                status: 'Success'
             }),
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -16,11 +20,22 @@ exports.handler = (event, context, callback) => {
         });
     }).catch((err) => {
         console.error(err);
-        errorResponse(err.message, context.awsRequestId, callback)
-    });
-
-    
+        callback(null, {
+          statusCode: 501,
+          body: JSON.stringify({
+            logID: logId.toString("hex"),
+            status: 'Failed'
+          }),
+          headers: {
+              'Access-Control-Allow-Origin': '*',
+          },
+        });
+    });    
 };
+
+function sendEmail(params){
+  return new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+}
 
 
 function generateParams(toAddresses, ccAddresses='scldeveloper1@gmail.com', replyToAddresses='austin.puthen@pace.edu') {
