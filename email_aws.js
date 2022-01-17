@@ -1,4 +1,6 @@
-// Load the AWS SDK for Node.js
+// Stand alone application
+
+// Load the AWS SDK for Node.j
 var AWS = require('aws-sdk');
 // Set the region 
 AWS.config.update({region: 'us-east-2'});
